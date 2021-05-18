@@ -13,7 +13,7 @@ $helper = $fb->getRedirectLoginHelper();
 
 $permissions = ['email']; // Optional permissions
 //$loginUrl = $helper->getLoginUrl('http://localhost/minmin/fb-callback.php', $permissions);
-$loginUrl = $helper->getLoginUrl('fb-callback.php', $permissions);
+$loginUrl = $helper->getLoginUrl('http://namning.xyz/fb-callback.php', $permissions);
 
 echo '<a href="' . $loginUrl . '">Log in with Facebook!</a>';
 ?>
