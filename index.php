@@ -1,19 +1,49 @@
-<?php
-session_start();
-require_once __DIR__ . '/vendor/autoload.php';
-$appid = '3765972670192167';
-$appsecret = '3b947fc5413cc9e877c2f84451561772';
-$fb = new Facebook\Facebook([
-  'app_id' => '3765972670192167',
-  'app_secret' => '3b947fc5413cc9e877c2f84451561772',
-  'default_graph_version' => 'v2.10',
-  ]);
+<!DOCTYPE html>
+<html>
 
-$helper = $fb->getRedirectLoginHelper();
+<head>
+    <meta charset="utf-8">
+    <!-- Responsive for all device -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>Wellcome to lockdoor page</title>
+</head>
 
-$permissions = ['email']; // Optional permissions
-//$loginUrl = $helper->getLoginUrl('http://localhost/minmin/fb-callback.php', $permissions);
-$loginUrl = $helper->getLoginUrl('https://namning.xyz/fb-callback.php', $permissions);
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="navbar-nav ml-auto">
+            <a class="nav-item nav-link active" href="login.php">เข้าสู่ระบบ<span class="sr-only">(current)</span></a>
+        </div>
+    </nav>
+    <img id='banner' class='mx-auto d-block img-fluid' src='' alt='img'>
+    <img id='rule' class='mx-auto d-block img-fluid' src='' alt='img'>
+    <script>
+        $(document).ready(function () {
+            if ($(window).width() >= 750) {
+                $('#banner').attr('src', 'images/desktop_banner.jpeg')
+                $('#rule').attr('src', 'images/desktop_rule.jpeg')
+            } else {
+                $('#banner').attr('src', 'images/mobile_banner.jpeg')
+                $('#rule').attr('src', 'images/mobile_rule.jpeg')
+            }
+            $(window).bind('resize', function () {
+                if ($(window).width() >= 750) {
+                    $('#banner').attr('src', 'images/desktop_banner.jpeg')
+                    $('#rule').attr('src', 'images/desktop_rule.jpeg')
+                } else {
+                    $('#banner').attr('src', 'images/mobile_banner.jpeg')
+                    $('#rule').attr('src', 'images/mobile_rule.jpeg')
+                }
+            });
+        });        
+    </script>
+</body>
 
-echo '<a href="' . $loginUrl . '">Log in with Facebook!</a>';
-?>
+</html>

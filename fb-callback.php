@@ -1,6 +1,7 @@
 <?php
 session_start();
-require_once __DIR__ . '/vendor/autoload.php';
+include 'config.php';
+/*require_once __DIR__ . '/vendor/autoload.php';
 $appid = '3765972670192167';
 $appsecret = '3b947fc5413cc9e877c2f84451561772';
 $fb = new Facebook\Facebook([
@@ -8,7 +9,7 @@ $fb = new Facebook\Facebook([
     'app_secret' => '3b947fc5413cc9e877c2f84451561772',
     'default_graph_version' => 'v2.10',
     ]);
-  
+*/ 
   $helper = $fb->getRedirectLoginHelper();
   
   try {
@@ -51,7 +52,7 @@ $fb = new Facebook\Facebook([
   
   // Validation (these will throw FacebookSDKException's when they fail)
   //$tokenMetadata->validateAppId($config['app_id']);
-  $tokenMetadata->validateAppId('3765972670192167');
+  $tokenMetadata->validateAppId($appid);
   // If you know the user ID this access token belongs to, you can validate it here
   //$tokenMetadata->validateUserId('123');
   $tokenMetadata->validateExpiration();
@@ -73,6 +74,7 @@ $fb = new Facebook\Facebook([
   
   // User is logged in with a long-lived access token.
   // You can redirect them to a members-only page.
-  //header('Location: https://example.com/members.php');
+  //header('Location: https://namning.xyz/member.php');
+  header('Location: '.$website.'member.php');
   
 ?>
