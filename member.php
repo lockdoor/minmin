@@ -7,7 +7,7 @@ if(!$_SESSION['fb_access_token']){
     //require_once __DIR__ . '/vendor/autoload.php';
     include 'config.php';
 
-//session time out    
+    //session time out    
     $sessionlifetime = 30; //กำหนดเป็นนาที
     if(isset($_SESSION["timeLasetdActive"])){
         $seclogin = (time()-$_SESSION["timeLasetdActive"])/60;
@@ -21,13 +21,7 @@ if(!$_SESSION['fb_access_token']){
         }
     }else{
         $_SESSION["timeLasetdActive"] = time();
-    }
-
-    /*$fb = new Facebook\Facebook([
-        'app_id' => '3765972670192167',
-        'app_secret' => '3b947fc5413cc9e877c2f84451561772',
-        'default_graph_version' => 'v2.10',
-        ]); */   
+    }   
       
     try {
     // Returns a `Facebook\Response` object
