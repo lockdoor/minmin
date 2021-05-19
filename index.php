@@ -19,7 +19,10 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="navbar-nav ml-auto">
-            <a class="nav-item nav-link active" href="login.php">เข้าสู่ระบบ<span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link active" href="login.php">
+                <img style="width: 30px" src="images/template/facebook.png">
+                 เข้าสู่ระบบ
+                <span class="sr-only">(current)</span></a>
         </div>
     </nav>
     <img id='banner' class='mx-auto d-block img-fluid' src='' alt='img'>
@@ -27,19 +30,19 @@
     <script>
         $(document).ready(function () {
             if ($(window).width() >= 750) {
-                $('#banner').attr('src', 'images/desktop_banner.jpeg')
-                $('#rule').attr('src', 'images/desktop_rule.jpeg')
+                $('#banner').attr('src', 'images/template/desktop_banner.jpeg')
+                $('#rule').attr('src', 'images/template/desktop_rule.jpeg')
             } else {
-                $('#banner').attr('src', 'images/mobile_banner.jpeg')
-                $('#rule').attr('src', 'images/mobile_rule.jpeg')
+                $('#banner').attr('src', 'images/template/mobile_banner.jpeg')
+                $('#rule').attr('src', 'images/template/mobile_rule.jpeg')
             }
             $(window).bind('resize', function () {
                 if ($(window).width() >= 750) {
-                    $('#banner').attr('src', 'images/desktop_banner.jpeg')
-                    $('#rule').attr('src', 'images/desktop_rule.jpeg')
+                    $('#banner').attr('src', 'images/template/desktop_banner.jpeg')
+                    $('#rule').attr('src', 'images/template/desktop_rule.jpeg')
                 } else {
-                    $('#banner').attr('src', 'images/mobile_banner.jpeg')
-                    $('#rule').attr('src', 'images/mobile_rule.jpeg')
+                    $('#banner').attr('src', 'images/template/mobile_banner.jpeg')
+                    $('#rule').attr('src', 'images/template/mobile_rule.jpeg')
                 }
             });
         });        
