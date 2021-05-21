@@ -1,7 +1,7 @@
 <?php
 session_start();
 //session_destroy();
-if(!$_SESSION['fb_access_token']){
+if(!$_SESSION['fb_access_token'] || $_SESSION['facebookProfile']){
     header( "location: index.php" );
 }else{
     //require_once __DIR__ . '/vendor/autoload.php';
