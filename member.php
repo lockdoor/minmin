@@ -25,7 +25,8 @@ if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
 
     //ตรวจสอบว่ามีการลงทะเบียนหรือยัง ถ้ายังให้ลงทะเบียนก่อน   
     include 'connect-db.php';
-    $user = $_SESSION['facebookProfile'];    
+    $user = $_SESSION['facebookProfile'];
+    echo '<br>user name is '.$user['name'].'<br>';
     $strSQL = "SELECT facebook_id FROM users WHERE facebook_id='".$user['id']."';";
     $result = $conn->query($strSQL) /*or die ('can not find user'.$result)*/;
     $today = date('Y-m-d H:i:s');
