@@ -30,8 +30,8 @@ if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
     $strSQL = "SELECT facebook_id FROM users WHERE facebook_id='".$user['id']."';";
     $result = $conn->query($strSQL) or die ('can not find user'.$conn->error);
     $today = date('Y-m-d H:i:s');
-    //if($result->num_rows == 0){
-    if(!$result){
+    if($result->num_rows == 0){
+    //if(!$result){
         $strSQL = "INSERT INTO users (facebook_id, name, email, picture, create_date, login_date)\n
          VALUES ('".$user['id']."', '".$user['name']."', '".$user['email']."', '\n"
          .$user['picture']['url']."', '".$today."', '".$today."');";        
