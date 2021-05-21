@@ -10,4 +10,5 @@ $password = "{JDEhx@S(m@(";
 $dbname = "namningx_minmin";
 $conn = new mysqli($servername, $username, $password, $dbname) or die ('Connection failed');
 $conn->set_charset('utf8');
+print $conn ? 'connect success' : 'Connection failed';
 ?>
