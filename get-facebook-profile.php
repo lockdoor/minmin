@@ -40,7 +40,7 @@ if(!$_SESSION['fb_access_token']){
 
     //echo $_SESSION['facebookProfile']['name'];
     //echo $_SESSION['facebookProfile']['id'];
-    header("location: connect-db.php");
+    header("location: member.php");
 }
 
 ?>

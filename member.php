@@ -28,7 +28,7 @@ if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
     $user = $_SESSION['facebookProfile'];
     echo '<br>user name is '.$user['name'].'<br>';
     $strSQL = "SELECT facebook_id FROM users WHERE facebook_id='".$user['id']."';";
-    $result = $conn->query($strSQL) /*or die ('can not find user'.$result)*/;
+    $result = $conn->query($strSQL) or die ('can not find user'.$conn->error);
     $today = date('Y-m-d H:i:s');
     //if($result->num_rows == 0){
     if(!$result){
