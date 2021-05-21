@@ -1,2 +1,5 @@
 workspace.code-workspace
 images/
+config.php
+connect-db.php
+bk/
