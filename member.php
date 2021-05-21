@@ -1,12 +1,11 @@
 <?php
 session_start();
 //session_destroy();
-if(!$_SESSION['fb_access_token'] || $_SESSION['facebookProfile']){
+if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
     header( "location: index.php" );
 }else{
-    //require_once __DIR__ . '/vendor/autoload.php';
-    //include 'config.php';
-
+    echo "token = ".$_SESSION['fb_access_token'];
+    echo "token = ".$_SESSION['facebookProfile']['name'];
     //session time out    
     $sessionlifetime = 30; //กำหนดเป็นนาที
     if(isset($_SESSION["timeLasetdActive"])){

@@ -38,9 +38,9 @@ if(!$_SESSION['fb_access_token']){
     $_SESSION['facebookProfile']['email'] = $user['email'];
     $_SESSION['facebookProfile']['picture']['url'] = $user['picture']['url'];
 
-    echo $_SESSION['facebookProfile']['name'];
+    //echo $_SESSION['facebookProfile']['name'];
     //echo $_SESSION['facebookProfile']['id'];
-    //header("location: member.php");
+    header("location: member.php");
 }
 
 ?>
