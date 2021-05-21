@@ -34,7 +34,7 @@ if(!$_SESSION['fb_access_token']){
         $strSQL = "INSERT INTO users (facebook_id, name, email, picture, create_date, login_date)\n
          VALUES ('".$user['id']."', '".$user['name']."', '".$user['email']."', '\n"
          .$user['picture']['url']."', '".$today."', '".$today."');";        
-        $result = $conn->query($strSQL)or die ('failed get data');
+        $result = $conn->query($strSQL)or die ('can not insert user to db');
     }
     
     //ลงทะเบียนแล้ว login เข้ามาให้บันทึกเวลา login ใหม่ทุกครั้ง
@@ -45,7 +45,7 @@ if(!$_SESSION['fb_access_token']){
     $strSQL = "SELECT receipts.receipt_no, receipts.receipt_date, receipts.verify_date,\n
                 receipts.point, receipts.picture FROM receipts INNER JOIN users \n
                  ON receipts.facebook_id=users.facebook_id WHERE users.facebook_id='".$user['id']."' ORDER BY receipts.receipt_date DESC;";
-    $dataTable = $conn->query($strSQL) or die ('failed get data');
+    $dataTable = $conn->query($strSQL) or die ('con not get dataTable');
     $conn->close();   
     //echo $dataTable->num_rows;
     
