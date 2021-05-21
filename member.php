@@ -5,7 +5,7 @@ if(!$_SESSION['fb_access_token']){
     header( "location: index.php" );
 }else{
     //require_once __DIR__ . '/vendor/autoload.php';
-    include 'config.php';
+    //include 'config.php';
 
     //session time out    
     $sessionlifetime = 30; //กำหนดเป็นนาที
@@ -21,41 +21,44 @@ if(!$_SESSION['fb_access_token']){
         }
     }else{
         $_SESSION["timeLasetdActive"] = time();
-    }   
-      
-    try {
-    // Returns a `Facebook\Response` object
-    $response = $fb->get('/me?fields=id,name,email,picture.type(large)', $_SESSION['fb_access_token']);
-    } catch(Facebook\Exception\ResponseException $e) {
-    echo 'Graph returned an error: ' . $e->getMessage();
-    exit;
-    } catch(Facebook\Exception\SDKException $e) {
-    echo 'Facebook SDK returned an error: ' . $e->getMessage();
-    exit;
-    }
-      
-    $user = $response->getGraphUser();
-    /*
-    echo 'Name: ' . $user['name'].'<br>';
-    echo 'token: ' . $_SESSION['fb_access_token'].'<br>';
+    }  
+    
 
-    echo '<a href="logout.php">log out</a><br>';
-
-    echo gettype($user);
-    echo '<pre>';
-    print_r($user);
-    echo '</pre>';
-    foreach($user as $value){
-        echo $value.'<br>';
+    //ตรวจสอบว่ามีการลงทะเบียนหรือยัง ถ้ายังให้ลงทะเบียนก่อน   
+    include 'connect-db.php';
+    $user = $_SESSION['facebookProfile'];    
+    $strSQL = "SELECT facebook_id FROM users WHERE facebook_id='".$user['id']."';";
+    $result = $conn->query($strSQL) or die ('failed get data');
+    $today = date('Y-m-d H:i:s');
+    if($result->num_rows == 0){
+        $strSQL = "INSERT INTO users (facebook_id, name, email, picture, create_date, login_date)\n
+         VALUES ('".$user['id']."', '".$user['name']."', '".$user['email']."', '\n"
+         .$user['picture']['url']."', '".$today."', '".$today."');";        
+        $result = $conn->query($strSQL)or die ('failed get data');
     }
     
-   
+    //ลงทะเบียนแล้ว login เข้ามาให้บันทึกเวลา login ใหม่ทุกครั้ง
+    $strSQL = "UPDATE users SET login_date='".$today."' WHERE facebook_id='".$user['id']."';";
+    $conn->query($strSQL);
     
-    echo "<img src='".$user['picture']['url']."' alt='img'>";*/
+    //ดึงข้อมูลมาแสดง
+    $strSQL = "SELECT receipts.receipt_no, receipts.receipt_date, receipts.verify_date,\n
+                receipts.point, receipts.picture FROM receipts INNER JOIN users \n
+                 ON receipts.facebook_id=users.facebook_id WHERE users.facebook_id='".$user['id']."' ORDER BY receipts.receipt_date DESC;";
+    $dataTable = $conn->query($strSQL) or die ('failed get data');
+    $conn->close();   
+    //echo $dataTable->num_rows;
     
+    /*foreach($dataTable as $item){
+        foreach($item as $value){
+            print (isset($value)) ? $value.'<br>' : 'null <br>';
+            
+        }
+    }*/
+    //อัพรูป upload-img.php;  
 }
-
 ?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -71,35 +74,82 @@ if(!$_SESSION['fb_access_token']){
         <!-- Latest compiled JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <title>Wellcome to lockdoor page</title>
+        <style>
+            input, button {
+                /*font-size: 60px;*/
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            }
+        </style>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="navbar-nav ml-auto">
-                <a class="nav-item nav-link active" href="login.php">
-                    <img style="width: 30px" src="images/template/facebook.png">
-                    ออกจากระบบ
-                    <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link active" href="logout.php">
+                <img style="width: 30px" src="images/template/facebook.png">
+                ออกจากระบบ
+                <span class="sr-only">(current)</span></a>
             </div>
         </nav>
         <div class='container'>
             <div class="row">
-                <div class="col-sm-4 text-center">
-                    <!--div class="row pt-4">
-                        <div class="col text-center ">
-                            <img class="" src="<?php //echo $user["picture"]["url"]?>">
-                        </div>    
+                <div class="col-md-4 text-center">
+                    <img class="pt-4 pb-4" src="<?php echo $user["picture"]["url"]?>">
+                    <p class=''>ชื่อผู้ใช้ : <?php echo $user['name']?></p>
+                    <p class=''>คะแนนรวม : </p>
+                    
+                    <!--input img start-->
+                    <script src="js/img_resize.js"></script>                                       
+
+                    <div class="input-group mb-3">
+                        <div hidden class="input-group-prepend" id="btnUpload">
+                            <span class="input-group-text" onclick="process('<?php echo $user['id']?>', image) ">UPLOAD</span>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" id="upload" class="custom-file-input" accept=".jpg, .jpeg, .png" onchange="preview()" />
+                            <label class="custom-file-label" for="upload">Choose file</label>
+                        </div>
                     </div>
-                    <div class="row text-center pt-4">
-                        <div class="col text-center">
-                            <p>ชื่อผู้ใช้ : <?php //echo $user['name']?></p>
-                        </div>                        
-                    </div-->
-                    <img class="pt-4" src="<?php echo $user["picture"]["url"]?>">
-                    <p class='pt-4'>ชื่อผู้ใช้ : <?php echo $user['name']?></p>
-                    <p class='pt-1'>คะแนนรวม : </p>
+                    <div><img class='img-fluid' id="output" /></div>                 
+
+                    <!--input img end-->
                 </div>
+
                 <div class="col-md-8 text-center">
                     <p class="pt-4">{พื้นที่แสดงตารางการอัพใบเสร็จ}</p>
+                    <table class="table table-hover">
+                     <thead>
+                      <tr>
+                       <th scope="col">receipt_no</th>
+                       <!--th scope="col">verify</th-->
+                       <th scope="col">receipt_date</th>
+                       <th scope="col">verify_date</th>
+                       <!--th scope="col">vender</th-->
+                       <th scope="col">point</th>
+                       <th scope="col">picture</th>
+                      </tr>
+                     </thead>
+                     <tbody>
+                     <?php
+                        $strTable = '';
+                        foreach($dataTable as $item){
+                            $strTable = $strTable.'<tr>';
+                            $numberItems = count($item);
+                            $i = 0;
+                            foreach($item as $value){
+                                
+                                if(!isset($value)) $value = 'รอการตรวจสอบ';
+                                if(++$i === $numberItems){
+                                    $strTable = $strTable.'<td><a href="'.$value.'" target="_blank"><img src="'.$value.'" style="width: 50px" /></a></td>';
+                                }else{
+                                    $strTable = $strTable.'<td>'.$value.'</td>';
+                                }
+                            }
+                            $strTable = $strTable.'</tr>';                            
+                        }
+                        echo $strTable;
+                     ?>
+                     </tbody>
+                    </table>
                 </div>
 
             </div>

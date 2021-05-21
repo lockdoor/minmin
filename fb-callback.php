@@ -31,8 +31,8 @@ include 'config.php';
   }
   
   // Logged in
-  echo '<h3>Access Token</h3>';
-  var_dump($accessToken->getValue());
+  //echo '<h3>Access Token</h3>';
+  //var_dump($accessToken->getValue());
   
   // The OAuth 2.0 client handler helps us manage access tokens
   $oAuth2Client = $fb->getOAuth2Client();
@@ -63,10 +63,11 @@ include 'config.php';
   }
   
   $_SESSION['fb_access_token'] = (string) $accessToken;
+
   
   // User is logged in with a long-lived access token.
   // You can redirect them to a members-only page.
   //header('Location: https://namning.xyz/member.php');
-  header('Location: '.$website.'member.php');
+  header('Location: '.$website.'get-facebook-profile.php');
   
 ?>
