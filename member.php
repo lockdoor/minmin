@@ -4,8 +4,8 @@ session_start();
 if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
     header( "location: index.php" );
 }else{
-    echo "token = ".$_SESSION['fb_access_token'];
-    echo "token = ".$_SESSION['facebookProfile']['name'];
+    //echo "token = ".$_SESSION['fb_access_token'];
+    //echo "token = ".$_SESSION['facebookProfile']['name'];
     //session time out    
     $sessionlifetime = 30; //กำหนดเป็นนาที
     if(isset($_SESSION["timeLasetdActive"])){
