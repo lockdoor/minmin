@@ -26,16 +26,15 @@ if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
     //ตรวจสอบว่ามีการลงทะเบียนหรือยัง ถ้ายังให้ลงทะเบียนก่อน   
     include 'connect-db.php';
     $user = $_SESSION['facebookProfile'];
-    echo '<br>user name is '.$user['name'].'<br>';
+    //echo '<br>user name is '.$user['name'].'<br>';
     $strSQL = "SELECT facebook_id FROM users WHERE facebook_id='".$user['id']."';";
     $result = $conn->query($strSQL) or die ('can not find user'.$conn->error);
     $today = date('Y-m-d H:i:s');
     if($result->num_rows == 0){
-    //if(!$result){
         $strSQL = "INSERT INTO users (facebook_id, name, email, picture, create_date, login_date)\n
          VALUES ('".$user['id']."', '".$user['name']."', '".$user['email']."', '\n"
          .$user['picture']['url']."', '".$today."', '".$today."');";        
-        $result = $conn->query($strSQL)or die ('can not insert user to db');
+        $result = $conn->query($strSQL)or die ('can not insert user to db'.$conn->error);
     }
     
     //ลงทะเบียนแล้ว login เข้ามาให้บันทึกเวลา login ใหม่ทุกครั้ง
@@ -46,7 +45,7 @@ if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
     $strSQL = "SELECT receipts.receipt_no, receipts.receipt_date, receipts.verify_date,\n
                 receipts.point, receipts.picture FROM receipts INNER JOIN users \n
                  ON receipts.facebook_id=users.facebook_id WHERE users.facebook_id='".$user['id']."' ORDER BY receipts.receipt_date DESC;";
-    $dataTable = $conn->query($strSQL) or die ('con not get dataTable');
+    $dataTable = $conn->query($strSQL) or die ('con not get dataTable'.$conn->error);
     $conn->close();   
     //echo $dataTable->num_rows;
     
