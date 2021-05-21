@@ -4,8 +4,7 @@ session_start();
 if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
     header( "location: index.php" );
 }else{
-    //echo "token = ".$_SESSION['fb_access_token'];
-    //echo "token = ".$_SESSION['facebookProfile']['name'];
+
     //session time out    
     $sessionlifetime = 30; //กำหนดเป็นนาที
     if(isset($_SESSION["timeLasetdActive"])){
@@ -47,14 +46,7 @@ if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
                  ON receipts.facebook_id=users.facebook_id WHERE users.facebook_id='".$user['id']."' ORDER BY receipts.receipt_date DESC;";
     $dataTable = $conn->query($strSQL) or die ('con not get dataTable'.$conn->error);
     $conn->close();   
-    //echo $dataTable->num_rows;
-    
-    /*foreach($dataTable as $item){
-        foreach($item as $value){
-            print (isset($value)) ? $value.'<br>' : 'null <br>';
-            
-        }
-    }*/
+
     //อัพรูป upload-img.php;  
 }
 ?>
