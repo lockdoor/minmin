@@ -17,18 +17,18 @@ if( $_POST['loginname'] && $_POST['pw'] ){
     $result = $stmt->get_result();
     //echo 'row = '.$result->num_rows.'<br>';     
 
-    /*if($result->num_rows == 1){
+    if($result->num_rows == 1){
         while($row = $result->fetch_assoc()){
             $_SESSION['staff_id'] = $row['staff_id'];
             $_SESSION['name'] = $row['name'];
-            //header( "location: admin.php" );        
+            header( "location: admin.php" );        
         }
     }else{
         echo 'user not found'.'<br>';
-        //header( "location: index.php" );
-    }*/
+        header( "location: index.php" );
+    }
 }else{
     echo 'sesion not found'.'<br>';
-    //header( "location: index.php" );
+    header( "location: index.php" );
 }
 ?>
