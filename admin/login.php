@@ -9,7 +9,7 @@ if( $_POST['loginname'] && $_POST['pw'] ){
     //echo 'password = '.md5($pw).'<br>';    
     include '../connect-db.php';    
     $strSQL = "SELECT * FROM staffs WHERE loginname='".$loginname."' AND password='".$pw."' ;";    
-    $result = $conn->query($strSQL) or die ('error user not found '.$conn->error.'<br>');
+    //$result = $conn->query($strSQL) or die ('error user not found '.$conn->error.'<br>');
     //protect sql injection
     $stmt = $conn->prepare('SELECT * FROM staffs WHERE loginname = ? AND password = ?');
     $stmt->bind_param('ss', $loginname, $pw);
