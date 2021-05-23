@@ -15,7 +15,7 @@ if( $_POST['loginname'] && $_POST['pw'] ){
     $stmt->bind_param('ss', $loginname, $pw);
     $stmt->execute();
     $result = $stmt->get_result();
-    //echo 'row = '.$result->num_rows.'<br>';     
+    echo 'row = '.$result->num_rows.'<br>';     
 
     if($result->num_rows == 1){
         while($row = $result->fetch_assoc()){
