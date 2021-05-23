@@ -51,84 +51,54 @@ if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
 }
 ?>
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <!-- Responsive for all device -->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-        <!-- jQuery library -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <!-- Popper JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-        <!-- Latest compiled JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <title>Wellcome to lockdoor page</title>
-        <style>
-            input, button {
-                /*font-size: 60px;*/
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-            }
-        </style>
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="navbar-nav ml-auto">
-                <a class="nav-item nav-link active" href="logout.php">
-                <img style="width: 30px" src="images/template/facebook.png">
-                ออกจากระบบ
-                <span class="sr-only">(current)</span></a>
-            </div>
-        </nav>
-        <div class='container'>
-            <div class="row">
-                <div class="col-md-4 text-center">
-                    <img class="pt-4 pb-4" src="<?php echo $user["picture"]["url"]?>">
-                    <p class=''>ชื่อผู้ใช้ : <?php echo $user['name']?></p>
-                    <p class=''>คะแนนรวม : </p>
-                    
-                    <!--input img start-->
-                    <script src="js/img_resize.js"></script>                                       
+<!-- html area -->
+<?php include 'html-header.php'; ?>
+    <div class='container'>
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <img class="pt-4 pb-4" src="<?php echo $user["picture"]["url"]?>">
+                <p class=''>ชื่อผู้ใช้ : <?php echo $user['name']?></p>
+                <p class=''>คะแนนรวม : </p>
+                
+                <!--input img start-->
+                <script src="js/img_resize.js"></script>                                       
 
-                    <div class="input-group mb-3">
-                        <div hidden class="input-group-prepend" id="btnUpload">
-                            <span class="input-group-text" onclick="process('<?php echo $user['id']?>', image) ">UPLOAD</span>
-                        </div>
-                        <div class="custom-file">
-                            <input type="file" id="upload" class="custom-file-input" accept=".jpg, .jpeg, .png" onchange="preview()" />
-                            <label class="custom-file-label" for="upload">Choose file</label>
-                        </div>
+                <div class="input-group mb-3">
+                    <div hidden class="input-group-prepend" id="btnUpload">
+                        <span class="input-group-text" onclick="process('<?php echo $user['id']?>', image) ">UPLOAD</span>
                     </div>
-                    <div><img class='img-fluid' id="output" /></div>                 
-
-                    <!--input img end-->
+                    <div class="custom-file">
+                        <input type="file" id="upload" class="custom-file-input" accept=".jpg, .jpeg, .png" onchange="preview()" />
+                        <label class="custom-file-label" for="upload">Choose file</label>
+                    </div>
                 </div>
+                <div><img class='img-fluid' id="output" /></div>                 
 
-                <div class="col-md-8 text-center">
-                    <p class="pt-4">{พื้นที่แสดงตารางการอัพใบเสร็จ}</p>
-                    <table class="table table-hover">
-                     <thead>
-                      <tr>
-                       <th scope="col">receipt_no</th>
-                       <!--th scope="col">verify</th-->
-                       <th scope="col">receipt_date</th>
-                       <th scope="col">verify_date</th>
-                       <!--th scope="col">vender</th-->
-                       <th scope="col">point</th>
-                       <th scope="col">picture</th>
-                      </tr>
-                     </thead>
-                     <tbody>
-                     <?php
+                <!--input img end-->
+            </div>
+
+            <div class="col-md-8 text-center">
+                <p class="pt-4">{พื้นที่แสดงตารางการอัพใบเสร็จ}</p>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                    <th scope="col">receipt_no</th>
+                    <!--th scope="col">verify</th-->
+                    <th scope="col">receipt_date</th>
+                    <th scope="col">verify_date</th>
+                    <!--th scope="col">vender</th-->
+                    <th scope="col">point</th>
+                    <th scope="col">picture</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
                         $strTable = '';
                         foreach($dataTable as $item){
                             $strTable = $strTable.'<tr>';
                             $numberItems = count($item);
                             $i = 0;
-                            foreach($item as $value){
-                                
+                            foreach($item as $value){                            
                                 if(!isset($value)) $value = 'รอการตรวจสอบ';
                                 if(++$i === $numberItems){
                                     $strTable = $strTable.'<td><a href="'.$value.'" target="_blank"><img src="'.$value.'" style="width: 50px" /></a></td>';
@@ -139,13 +109,12 @@ if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
                             $strTable = $strTable.'</tr>';                            
                         }
                         echo $strTable;
-                     ?>
-                     </tbody>
-                    </table>
-                </div>
-
+                    ?>
+                    </tbody>
+                </table>
             </div>
-            
+
         </div>
-    </body>
-</html>
+        
+    </div>
+<?php include 'html-footer.php';?>

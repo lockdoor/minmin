@@ -3,3 +3,4 @@ images/
 config.php
 connect-db.php
 bk/
+admin/connect-db.php
