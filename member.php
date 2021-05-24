@@ -4,7 +4,6 @@ session_start();
 if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
     header( "location: index.php" );
 }else{
-
     //session time out    
     $sessionlifetime = 30; //กำหนดเป็นนาที
     if(isset($_SESSION["timeLasetdActive"])){
@@ -20,32 +19,50 @@ if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
     }else{
         $_SESSION["timeLasetdActive"] = time();
     }  
-    
-
     //ตรวจสอบว่ามีการลงทะเบียนหรือยัง ถ้ายังให้ลงทะเบียนก่อน   
     include 'connect-db.php';
-    $user = $_SESSION['facebookProfile'];
-    //echo '<br>user name is '.$user['name'].'<br>';
-    $strSQL = "SELECT facebook_id FROM users WHERE facebook_id='".$user['id']."';";
-    $result = $conn->query($strSQL) or die ('can not find user'.$conn->error);
+    $user = $_SESSION['facebookProfile'];    
+    $strSQL = "SELECT facebook_id FROM users WHERE facebook_id=:facebook_id;";
+    $query = $conn->prepare($strSQL);
+    $query->bindParam(':facebook_id', $user['id']);
+    $query->execute();    
+    $result = $query->fetch(PDO::FETCH_ASSOC);    
     $today = date('Y-m-d H:i:s');
-    if($result->num_rows == 0){
-        $strSQL = "INSERT INTO users (facebook_id, name, email, picture, create_date, login_date)\n
-         VALUES ('".$user['id']."', '".$user['name']."', '".$user['email']."', '\n"
-         .$user['picture']['url']."', '".$today."', '".$today."');";        
-        $result = $conn->query($strSQL)or die ('can not insert user to db'.$conn->error);
+    //ถ้ายังไม่ได้ลงทะเบียนก็ให้บันทึกข้อมูลลงทะเบียนในฐานข้อมูล
+    if(!$result){
+         $strSQL = "INSERT INTO users (facebook_id, name, email, picture, create_date, login_date)\n
+         VALUES (:facebook_id, :name, :email, :picture, :create_date, :login_date);";
+         $query = $conn->prepare($strSQL);
+         $query->bindParam(':facebook_id', $user['id']);
+         $query->bindParam(':name', $user['name']);
+         $query->bindParam(':email', $user['email']);
+         $query->bindParam(':picture', $user['picture']['url']);
+         $query->bindParam(':create_date', $today);
+         $query->bindParam(':login_date', $today);
+         $query->execute();
     }
     
     //ลงทะเบียนแล้ว login เข้ามาให้บันทึกเวลา login ใหม่ทุกครั้ง
-    $strSQL = "UPDATE users SET login_date='".$today."' WHERE facebook_id='".$user['id']."';";
-    $conn->query($strSQL);
+    //$strSQL = "UPDATE users SET login_date='".$today."' WHERE facebook_id='".$user['id']."';";
+    $strSQL = "UPDATE users SET login_date=:login_date WHERE facebook_id=:facebook_id;";
+    $query = $conn->prepare($strSQL);
+    $query->bindParam(':login_date', $today);
+    $query->bindParam(':facebook_id', $user['id']);
+    $query->execute();
     
-    //ดึงข้อมูลมาแสดง
+    //ดึงข้อมูลมาแสดง    
     $strSQL = "SELECT receipts.receipt_no, receipts.receipt_date, receipts.verify_date,\n
                 receipts.point, receipts.picture FROM receipts INNER JOIN users \n
-                 ON receipts.facebook_id=users.facebook_id WHERE users.facebook_id='".$user['id']."' ORDER BY receipts.receipt_date DESC;";
-    $dataTable = $conn->query($strSQL) or die ('con not get dataTable'.$conn->error);
-    $conn->close();   
+                 ON receipts.facebook_id=users.facebook_id WHERE users.facebook_id=:facebook_id ORDER BY receipts.receipt_date DESC;";    
+    $query = $conn->prepare($strSQL);
+    $query->bindParam(':facebook_id', $user['id']);
+    $query->execute();
+    $query->setFetchMode(PDO::FETCH_ASSOC);
+    $dataTable = $query->fetchAll();
+    
+    
+    $query = null;
+    $conn = null;   
 
     //อัพรูป upload-img.php;  
 }
@@ -106,7 +123,7 @@ if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
                                     $strTable = $strTable.'<td>'.$value.'</td>';
                                 }
                             }
-                            $strTable = $strTable.'</tr>';                            
+                            $strTable = $strTable.'<tr>';                      
                         }
                         echo $strTable;
                     ?>
