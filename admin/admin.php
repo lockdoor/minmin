@@ -9,14 +9,16 @@ if( !isset($_SESSION['staff_id']) || !isset($_SESSION['name']) ){
     
     include '../connect-db.php';
     //#นับจำนวนใบเสร็จที่ยังไม่มีการตรวจสอบ
-    $strSQL = "SELECT COUNT(*) as total FROM receipts WHERE verify='0';";   
+    $strSQL = "SELECT COUNT(*) as total FROM receipts WHERE verify=0;";   
     $result = $conn->query($strSQL);
     //return sql object to array
-    $totalReceiptNotVerify = $result->fetch(PDO::FETCH_ASSOC);    
-ุ
+    $totalReceiptNotVerify = $result->fetch(PDO::FETCH_ASSOC);
+
     //#ดึงข้อมูลใบเสร็จที่ยังไม่ได้ตรวจสอบ
-    $strSQL = "SELECT * FROM receipts WHERE verify='0'ORDER BY receipt_date DESC LIMIT 10;";    
+    $strSQL = "SELECT * FROM receipts WHERE verify=0 ORDER BY receipt_date DESC LIMIT 10;";    
     $receiptNotVerify = $conn->query($strSQL);
+
+    $conn = null;
 }
 ?>
 <!-- html area -->
