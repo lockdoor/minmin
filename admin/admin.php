@@ -6,18 +6,15 @@ if( !isset($_SESSION['staff_id']) || !isset($_SESSION['name']) ){
 }else{
     $staff_id = $_SESSION['staff_id'];
     $admin_name = $_SESSION['name'];
-
     
     include '../connect-db.php';
-    $strSQL = "SELECT COUNT(*) as total FROM receipts WHERE verify='0'";
+    $strSQL = "SELECT COUNT(*) as total FROM receipts WHERE verify='0';";   
     $result = $conn->query($strSQL);
-    $totalReceiptNotVerify =mysqli_fetch_assoc($result); 
+    //return sql object to array
+    $totalReceiptNotVerify = $result->fetch(PDO::FETCH_ASSOC);
 
-    $strSQL = "SELECT * FROM receipts WHERE verify='0'ORDER BY receipt_date DESC LIMIT 10;";
+    $strSQL = "SELECT * FROM receipts WHERE verify='0'ORDER BY receipt_date DESC LIMIT 10;";    
     $receiptNotVerify = $conn->query($strSQL);
-                
-               
-    //echo $staff_id.'<br>'.$admin_name;
 }
 ?>
 <!-- html area -->
@@ -30,7 +27,7 @@ if( !isset($_SESSION['staff_id']) || !isset($_SESSION['name']) ){
                 $strDivStart = '<div class="col-xl-3 col-lg-4 col-md-6 mb-4 mb-lg-0 text-center border ">';
                 $strDivEnd = '</div>';
                 $str = '';
-                while($row = $receiptNotVerify->fetch_assoc()){
+                foreach($receiptNotVerify as $row){
                     $picture = '../'.$row['picture'];
                     $str = $str.$strDivStart.'<img src="'.$picture.'" class="w-50 shadow-1-strong rounded mb-4" alt="'.$picture.'" /></div>';
                 }
