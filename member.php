@@ -19,7 +19,7 @@ if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
     }else{
         $_SESSION["timeLasetdActive"] = time();
     }  
-    //ตรวจสอบว่ามีการลงทะเบียนหรือยัง ถ้ายังให้ลงทะเบียนก่อน   
+    //#ตรวจสอบว่ามีการลงทะเบียนหรือยัง ถ้ายังให้ลงทะเบียนก่อน   
     include 'connect-db.php';
     $user = $_SESSION['facebookProfile'];    
     $strSQL = "SELECT facebook_id FROM users WHERE facebook_id=:facebook_id;";
@@ -28,7 +28,7 @@ if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
     $query->execute();    
     $result = $query->fetch(PDO::FETCH_ASSOC);    
     $today = date('Y-m-d H:i:s');
-    //ถ้ายังไม่ได้ลงทะเบียนก็ให้บันทึกข้อมูลลงทะเบียนในฐานข้อมูล
+    //#ถ้ายังไม่ได้ลงทะเบียนก็ให้บันทึกข้อมูลลงทะเบียนในฐานข้อมูล
     if(!$result){
          $strSQL = "INSERT INTO users (facebook_id, name, email, picture, create_date, login_date)\n
          VALUES (:facebook_id, :name, :email, :picture, :create_date, :login_date);";
@@ -42,7 +42,7 @@ if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
          $query->execute();
     }
     
-    //ลงทะเบียนแล้ว login เข้ามาให้บันทึกเวลา login ใหม่ทุกครั้ง
+    //#ลงทะเบียนแล้ว login เข้ามาให้บันทึกเวลา login ใหม่ทุกครั้ง
     //$strSQL = "UPDATE users SET login_date='".$today."' WHERE facebook_id='".$user['id']."';";
     $strSQL = "UPDATE users SET login_date=:login_date WHERE facebook_id=:facebook_id;";
     $query = $conn->prepare($strSQL);
@@ -50,7 +50,7 @@ if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
     $query->bindParam(':facebook_id', $user['id']);
     $query->execute();
     
-    //ดึงข้อมูลมาแสดง    
+    //#ดึงข้อมูลมาแสดงในตาราง    
     $strSQL = "SELECT receipts.receipt_no, receipts.receipt_date, receipts.verify_date,\n
                 receipts.point, receipts.picture FROM receipts INNER JOIN users \n
                  ON receipts.facebook_id=users.facebook_id WHERE users.facebook_id=:facebook_id ORDER BY receipts.receipt_date DESC;";    
@@ -60,6 +60,13 @@ if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
     $query->setFetchMode(PDO::FETCH_ASSOC);
     $dataTable = $query->fetchAll();
     
+    //#รวมคะแนนเอาไปแสดงใต้ภาพ
+    $strSQL = "SELECT SUM(point) as total FROM receipts WHERE facebook_id=:facebook_id;";
+    $query = $conn->prepare($strSQL);
+    $query->bindParam(':facebook_id', $user['id']);
+    $query->execute();
+    $query->setFetchMode(PDO::FETCH_ASSOC);
+    $sumPoint = $query->fetch();
     
     $query = null;
     $conn = null;   
@@ -75,7 +82,7 @@ if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
             <div class="col-md-4 text-center">
                 <img class="pt-4 pb-4" src="<?php echo $user["picture"]["url"]?>">
                 <p class=''>ชื่อผู้ใช้ : <?php echo $user['name']?></p>
-                <p class=''>คะแนนรวม : </p>
+                <p class=''>คะแนนรวม : <?php echo $sumPoint['total']?></p>
                 
                 <!--input img start-->
                 <script src="js/img_resize.js"></script>                                       

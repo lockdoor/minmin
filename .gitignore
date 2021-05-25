@@ -4,3 +4,4 @@ config.php
 connect-db.php
 bk/
 admin/connect-db.php
+admin/admin-command.php
