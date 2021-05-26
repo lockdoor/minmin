@@ -1,3 +1,8 @@
+<?php
+if( !isset($_SESSION['staff_id']) || !isset($_SESSION['name']) ){
+    header( "location: index.php" );
+}
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,7 +19,24 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <title>Wellcome to lockdoor page</title>        
     </head>
-    <body>        
+    <body>
+    <script>
+            $(document).ready(function(){
+                $('.navbar-nav li').click(function(){                    
+                    var bodyURL = $(this).attr('value');
+                    //console.log(bodyURL);
+                    $.ajax({        
+                        //url: "admin.php",
+                        type: "POST",
+                        data: {bodyURL : bodyURL},                
+                        success: function(response){
+                            //console.log(response);
+                            location.reload();                   
+                        },
+                    });                    
+                });            
+            });
+        </script>       
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="navbar-brand">
             <img style="width: 30px" src="../images/template/minmin_logo.png">
@@ -25,11 +47,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            <li class="nav-item"  id="linkItem1" value="ranking.php" >
+                <a class="nav-link" href="#">อันดับคะแนน </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">ตรวจสอบใบเสร็จ</a>
+            <li class="nav-item" id="linkItem1" value="show-receipt.php" >
+                <a class="nav-link"  href="#">ตรวจสอบใบเสร็จ</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="logout.php">ออกจากระบบ</a>
