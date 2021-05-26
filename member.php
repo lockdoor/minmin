@@ -125,7 +125,7 @@ if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
                             foreach($item as $value){                            
                                 if(!isset($value)) $value = 'รอการตรวจสอบ';
                                 if(++$i === $numberItems){
-                                    $strTable = $strTable.'<td><a href="'.$value.'" target="_blank"><img src="'.$value.'" style="width: 50px" /></a></td>';
+                                    $strTable = $strTable.'<td><img src="'.$value.'" style="width: 50px onclick="showPictureModal( \''.$picture.'\')" /></td>';
                                 }else{
                                     $strTable = $strTable.'<td>'.$value.'</td>';
                                 }
@@ -140,5 +140,24 @@ if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
 
         </div>
         
+    </div>
+
+    <script>
+        function showPictureModal(pictureUrl){
+            $('#modal-Image').attr("src", pictureUrl);                      
+        }
+    </script>
+
+    <!-- Modal -->
+    <div class="modal fade modal-dialog modal-dialog-scrollable" id="staticBackdrop" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                
+                <div class="modal-body text-center">      
+                    <img id="modal-Image" src="" />        
+                </div>                
+                
+            </div>
+        </div>
     </div>
 <?php include 'html-footer.php';?>
