@@ -12,6 +12,7 @@ if (isset($_SESSION['fb_access_token'])){
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="icon" href="images/template/minmin_logo.png" type="image/png" sizes="16x16">
         <meta charset="utf-8">
         <!-- Responsive for all device -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
