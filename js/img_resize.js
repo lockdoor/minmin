@@ -3,7 +3,7 @@ var image;
 
 //https://www.youtube.com/watch?v=bXf_UdyDzSA
 function preview(){    
-
+    //alert('preview worked');
     const file = document.querySelector("#upload").files[0];
 
     if(!file) return;

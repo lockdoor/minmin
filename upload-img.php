@@ -17,14 +17,20 @@ if(!$_SESSION['fb_access_token']){
 	//print $success ? $file : 'Unable to save the file.';
 	
 	//insert data to db
-	if($success){
+	if($success){		
 		include 'connect-db.php';
 		$todayStr = $today->format('Y-m-d H:i:s');
-		$strSQL = "INSERT INTO receipts (facebook_id, receipt_date, picture)\n
-		 VALUE ('".$id."', '".$todayStr."', '".$file."');";
+		$strSQL = "INSERT INTO receipts (facebook_id, receipt_date, picture)
+		 			VALUE ('".$id."', '".$todayStr."', '".$file."');";
 		$result = $conn->query($strSQL);
-		echo $result;		
-		$conn->close();
+		//echo $result->fetch();			 
+		/*try{
+			$result = $conn->query($strSQL);
+			//echo $result;
+		}catch(PDOException, $e){
+			echo $e.getMessage();
+		}*/	
+		$conn = null;
 	}
 }
 ?>
