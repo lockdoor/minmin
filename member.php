@@ -125,7 +125,7 @@ if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
                             foreach($item as $value){                            
                                 if(!isset($value)) $value = 'รอการตรวจสอบ';
                                 if(++$i === $numberItems){
-                                    $strTable = $strTable.'<td><img src="'.$value.'" style="width: 50px" onclick="showPictureModal( \''.$picture.'\')" data-toggle="modal" data-target="#staticBackdrop"/></td>';
+                                    $strTable = $strTable.'<td><img src="'.$value.'" style="width: 50px" onclick="showPictureModal( \''.$value.'\')" data-toggle="modal" data-target="#exampleModal"/></td>';
                                 }else{
                                     $strTable = $strTable.'<td>'.$value.'</td>';
                                 }
@@ -149,15 +149,15 @@ if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
     </script>
 
     <!-- Modal -->
-    <div class="modal fade modal-dialog modal-dialog-scrollable" id="staticBackdrop" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
-                
-                <div class="modal-body text-center">      
-                    <img id="modal-Image" src="" />        
-                </div>                
+            
+                <div class="modal-body text-center">
+                    <img id="modal-Image" src="" />  
+                </div>
                 
             </div>
         </div>
-    </div>
+        </div>
 <?php include 'html-footer.php';?>
