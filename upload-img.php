@@ -22,7 +22,7 @@ if(!$_SESSION['fb_access_token']){
 		$todayStr = $today->format('Y-m-d H:i:s');
 		$strSQL = "INSERT INTO receipts (facebook_id, receipt_date, picture)\n
 		 VALUE ('".$id."', '".$todayStr."', '".$file."');";
-		$result = $conn->query($strSQL) or die ('failed get data');
+		$result = $conn->query($strSQL);
 		echo $result;		
 		$conn->close();
 	}
