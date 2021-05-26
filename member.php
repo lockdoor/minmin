@@ -125,7 +125,7 @@ if(!$_SESSION['fb_access_token'] || !$_SESSION['facebookProfile']){
                             foreach($item as $value){                            
                                 if(!isset($value)) $value = 'รอการตรวจสอบ';
                                 if(++$i === $numberItems){
-                                    $strTable = $strTable.'<td><img src="'.$value.'" style="width: 50px" onclick="showPictureModal( \''.$picture.'\')" /></td>';
+                                    $strTable = $strTable.'<td><img src="'.$value.'" style="width: 50px" onclick="showPictureModal( \''.$picture.'\')" data-toggle="modal" data-target="#staticBackdrop"/></td>';
                                 }else{
                                     $strTable = $strTable.'<td>'.$value.'</td>';
                                 }
